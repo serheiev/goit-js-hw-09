@@ -13,10 +13,6 @@ const options = {
 const inpDate = document.querySelector('#datetime-picker');
 const inpBtn = document.querySelector('[data-start]');
 const fp = flatpickr('#datetime-picker', options);
-const timerDays = document.querySelector('[data-days]');
-const timerHours = document.querySelector('[data-hours]');
-const timerMinutes = document.querySelector('[data-minutes]');
-const timerSeconds = document.querySelector('[data-seconds]');
 
 let userDate = null;
 inpBtn.setAttribute('disabled', true);
@@ -38,10 +34,12 @@ function startTimer() {
   let convDate = userDate - options.defaultDate;
   interval = setInterval(() => {
     let setDate = convertMs(convDate);
-    timerDays.textContent = ('0' + setDate.days).slice(-2);
-    timerHours.textContent = ('0' + setDate.hours).slice(-2);
-    timerMinutes.textContent = ('0' + setDate.minutes).slice(-2);
-    timerSeconds.textContent = ('0' + setDate.seconds).slice(-2);
+    for (let key in setDate) {
+      document.querySelector(`[data-${key}]`).textContent = String(
+        setDate[key]
+      ).padStart(2, '0');
+    }
+
     convDate -= 1000;
     if (convDate <= 0) {
       clearInterval(interval);
